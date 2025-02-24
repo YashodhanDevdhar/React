@@ -9,6 +9,8 @@ export type StateType = {
 export type ActionType = 
     | { type: "LOAD_PRODUCTS"; payload: Product[] }
     | {type: "ADD_TO_CART"; payload:Product}
+    | { type: "INCREASE_QUANTITY"; payload: number }
+    | { type: "DECREASE_QUANTITY"; payload: number }
     | {type: "REMOVE_FROM_CART"; payload: number}
     | {type: "ADMIN_ADD_PRODUCT"; payload: Product}
     | {type: "ADMIN_EDIT_PRODUCT"; payload: Product}
@@ -19,7 +21,38 @@ export const GlobalReducer = (state: StateType, action: ActionType):StateType =>
         case "LOAD_PRODUCTS":
             return { ...state, products: action.payload };
         case "ADD_TO_CART":
-            return {...state, cart:[...state.cart, action.payload]}
+            const existingProduct = state.cart.find((p) => p.id === action.payload.id);
+
+            if (existingProduct) {
+                // If product exists, increase its quantity
+                return {
+                    ...state,
+                    cart: state.cart.map((p) =>
+                        p.id === action.payload.id ? { ...p, quantity: p.quantity + 1 } : p
+                    ),
+                };
+            } else {
+                return { ...state, cart: [...state.cart, { ...action.payload, quantity: 1 }] };
+            }
+        
+        case "INCREASE_QUANTITY":
+            return {
+                ...state,
+                cart: state.cart.map((p) =>
+                    p.id === action.payload ? { ...p, quantity: p.quantity + 1 } : p
+                ),
+            };
+
+            case "DECREASE_QUANTITY":
+                return {
+                    ...state,
+                    cart: state.cart
+                        .map((p) =>
+                            p.id === action.payload ? { ...p, quantity: p.quantity - 1 } : p
+                        )
+                        .filter((p) => p.quantity > 0), 
+                };
+
         case "REMOVE_FROM_CART":
             return { ...state, cart: state.cart.filter((p) => p.id !== action.payload) };
         case "ADMIN_ADD_PRODUCT":
