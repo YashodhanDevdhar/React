@@ -6,6 +6,7 @@ const initialState : StateType = {
     cart: [],
     products: [],
     selectedCategory: "all",
+    isAdmin: false
 };
 
 export const GlobalContext = createContext<{

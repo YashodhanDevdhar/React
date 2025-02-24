@@ -13,3 +13,33 @@ export const fetchProducts = async() : Promise<Product[]> => {
     }
     return [];
 };
+
+export const AddProduct = {
+    addProduct: async (product: {
+      title: string;
+      price: number;
+      category: string;
+      image: string;
+    }) => {
+      try {
+        const response = await axios.post(API_URL, product);
+        console.log("Response Status:", response.status);
+        console.log("Response Data:", response.data);
+        return response;
+      } catch (error) {
+        console.error("Error adding product:", error);
+        throw error;
+      }
+    },
+  };
+
+  export const updateProduct = async (id: number, updatedProduct: Partial<Product>) => {
+    try {
+      const response = await axios.patch(`${API_URL}/${id}`, updatedProduct);
+      console.log("Product updated:", response.data);
+      return response;
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  };

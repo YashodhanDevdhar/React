@@ -4,6 +4,7 @@ export type StateType = {
     cart : Product[];
     products : Product[];
     selectedCategory: string;
+    isAdmin: boolean;
 };
 
 export type ActionType = 
@@ -14,7 +15,9 @@ export type ActionType =
     | {type: "REMOVE_FROM_CART"; payload: number}
     | {type: "ADMIN_ADD_PRODUCT"; payload: Product}
     | {type: "ADMIN_EDIT_PRODUCT"; payload: Product}
-    | { type: "FILTER_BY_CATEGORY"; payload: string };
+    | { type: "FILTER_BY_CATEGORY"; payload: string }
+    | { type: "ADMIN_LOGIN" }
+    | { type: "ADMIN_LOGOUT" };;
 
 export const GlobalReducer = (state: StateType, action: ActionType):StateType => {
     switch(action.type){
@@ -24,7 +27,6 @@ export const GlobalReducer = (state: StateType, action: ActionType):StateType =>
             const existingProduct = state.cart.find((p) => p.id === action.payload.id);
 
             if (existingProduct) {
-                // If product exists, increase its quantity
                 return {
                     ...state,
                     cart: state.cart.map((p) =>
@@ -64,6 +66,10 @@ export const GlobalReducer = (state: StateType, action: ActionType):StateType =>
               };
         case "FILTER_BY_CATEGORY":
             return { ...state, selectedCategory: action.payload };
+        case "ADMIN_LOGIN":
+            return { ...state, isAdmin: true };
+        case "ADMIN_LOGOUT":
+            return { ...state, isAdmin: false };
         default:
             return state;
     }
