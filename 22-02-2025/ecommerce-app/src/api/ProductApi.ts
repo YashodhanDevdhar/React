@@ -14,6 +14,11 @@ export const fetchProducts = async() : Promise<Product[]> => {
     return [];
 };
 
+export const fetchProductById = async (id: string): Promise<Product> => {
+  const response = await axios.get<Product>(`https://fakestoreapi.com/products/${id}`);
+  return response.data;
+};
+
 export const AddProduct = {
     addProduct: async (product: {
       title: string;
