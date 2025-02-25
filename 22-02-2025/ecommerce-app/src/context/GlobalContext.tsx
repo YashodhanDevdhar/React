@@ -1,6 +1,8 @@
 import { createContext, ReactNode, useEffect, useReducer } from "react";
 import { GlobalReducer, StateType } from "./GlobalReducer";
 import { fetchProducts } from "../api/ProductApi";
+import { useQuery } from "@tanstack/react-query";
+import { Product } from "../types/productTypes";
 
 const initialState : StateType = {
     cart: [],
@@ -20,13 +22,23 @@ export const GlobalContext = createContext<{
 export const GlobalProvider: React.FC<{children:ReactNode}> = ({children}) => {
     const [state, dispatch] = useReducer(GlobalReducer,initialState);
 
-    useEffect(() => {
-        const getProducts = async () => {
-            const products = await fetchProducts();
-            dispatch({type: "LOAD_PRODUCTS", payload: products})
-        };
-        getProducts();
-    }, []);
+    // useEffect(() => {
+    //     const getProducts = async () => {
+    //         const products = await fetchProducts();
+    //         dispatch({type: "LOAD_PRODUCTS", payload: products})
+    //     };
+    //     getProducts();
+    // }, []);
+
+    const { data: products } = useQuery<Product[]>({
+        queryKey : ["products"], 
+        queryFn: fetchProducts
+    });
+
+    if (products && state.products.length === 0) {
+        dispatch({ type: "LOAD_PRODUCTS", payload: products });
+      }
+
 
     console.log("Cart State:", state.cart);
     console.log("Products State:", state.products);

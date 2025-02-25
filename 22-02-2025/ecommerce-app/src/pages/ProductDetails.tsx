@@ -1,26 +1,31 @@
-import { useEffect, useState, useContext } from "react";
+import {useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { Product } from "../types/productTypes";
 import { GlobalContext } from "../context/GlobalContext";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductById } from "../api/ProductApi";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { dispatch } = useContext(GlobalContext);
-  const [product, setProduct] = useState<Product | null>(null);
+  // const [product, setProduct] = useState<Product | null>(null);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get<Product>(`https://fakestoreapi.com/products/${id}`);
-        setProduct(response.data);
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
-    };
-    fetchProduct();
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     try {
+  //       const response = await axios.get<Product>(`https://fakestoreapi.com/products/${id}`);
+  //       setProduct(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching product details:", error);
+  //     }
+  //   };
+  //   fetchProduct();
+  // }, [id]);
+
+  const { data: product } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => fetchProductById(id!),
+  });
 
   const handleAddToCart = () => {
     if (product) {
