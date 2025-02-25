@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AddProduct } from "../api/ProductApi";
+import { useMutation } from "@tanstack/react-query";
 
 
 
@@ -12,7 +13,16 @@ const AdminAddProduct = () => {
     image:"",
   })
 
-  const [status, setStatus] = useState<string | null>(null);
+  const mutation = useMutation({
+    mutationFn: AddProduct.addProduct, 
+    onSuccess: (data) => {
+      alert(`Product added successfully! ID: ${data.data.id}`);
+      setProduct({ title: "", price: "", category: "", image: "" }); 
+    },
+    onError: () => {
+      alert("Error adding product. Please try again.");
+    },
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProduct({...product, [e.target.name]: e.target.value});
@@ -26,26 +36,13 @@ const AdminAddProduct = () => {
       return;
     }
 
-    try{
-      const response = await AddProduct.addProduct({
-        title: product.title,
-        price: parseFloat(product.price),
-        category: product.category,
-        image: product.image,
-      });
-      
-      if (response.status === 200 || response.status === 201) {
-        setStatus("successfull!");
-        alert(`response status : ${status}`)
-      } else {
-        setStatus("Failed to add product.");
-        alert(`response status : ${status}`)
-      }
-    }
-    catch(error){
-      setStatus("Error occurred while adding the product.");
-      alert(`response status : ${status}`)
-    }
+    mutation.mutate({
+      title: product.title,
+      price: parseFloat(product.price),
+      category: product.category,
+      image: product.image,
+    });
+
   };
 
   return (
