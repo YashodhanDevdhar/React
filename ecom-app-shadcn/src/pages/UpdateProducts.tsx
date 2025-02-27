@@ -5,7 +5,8 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import AddProductDialog from "@/components/AddProductDialog";
 
 const UpdateProducts:React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -13,6 +14,10 @@ const UpdateProducts:React.FC = () => {
     const [selectedOrder, setSelectedOrder] = useState<string>('');
     
     const orderArr = ["desc","asc"];
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+
 
     const { data: categories } = useQuery({
         queryKey : ["caregories"],
@@ -32,13 +37,15 @@ const UpdateProducts:React.FC = () => {
   
         if (confirmed) {
             try {
-            const response = await deleteProduct(id); // API call (won't actually delete in static API)
-            alert(`Product deleted successfully! \n Status: ${response.status}`); // Show success message
+            const response = await deleteProduct(id); 
+            alert(`Product deleted successfully! \n Status: ${response.status}`); 
             } catch (error) {
             alert("Failed to delete product. Please try again.");
             }
         }
     };
+
+    
 
   return (
     <div className="px-4">
@@ -82,6 +89,9 @@ const UpdateProducts:React.FC = () => {
                         ))}
                     </SelectContent>
                 </Select>
+            </div>
+            <div>
+                <AddProductDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} />
             </div>
         </div>
 

@@ -57,3 +57,14 @@ export const deleteProduct = async(id: number) => {
     }
     
 };
+
+export const addProduct = async(product: Product) => {
+    try {
+        const response = await axios.post("https://fakestoreapi.com/products", product);
+        return response;
+    }
+    catch(error){
+        console.error("Error adding product : ", error);
+        throw error;
+    }
+}
