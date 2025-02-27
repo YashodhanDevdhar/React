@@ -4,9 +4,12 @@ import { Link } from "react-router-dom"
 import { Product } from "../types/ProductTypes"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "../store/cartStore";
 
 
 const Home:React.FC = () => {
+  const addToCart = useCartStore((state) => state.addToCart);
+
     const{data, error, isLoading} = useQuery({
         queryKey : ["limitedProducts"],
         queryFn : fetchLimitedProducts
@@ -15,6 +18,16 @@ const Home:React.FC = () => {
     if(isLoading) return <div><h1>Loading...</h1></div>
 
     if(error instanceof Error) return <div><h2>Error: {error.message}</h2></div>
+
+    const handleAdd = (product: Product) => {
+          try {
+            addToCart(product); 
+          alert(`Product added to cart successfully!`); 
+          } catch (error) {
+          alert("Failed to remove product. Please try again.");
+          }
+      
+  };
 
   return (
     
@@ -40,7 +53,12 @@ const Home:React.FC = () => {
                 </p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Add to Cart</Button>
+                <Button 
+                className="w-full"
+                onClick={() => handleAdd(product)}
+                >
+                  Add to Cart
+                </Button>
               </CardFooter>  
           </Card>
         ))}

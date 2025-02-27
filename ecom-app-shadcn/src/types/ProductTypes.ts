@@ -2,7 +2,7 @@ export type Product = {
     id: number;
     title: string;
     price: number;
-    description: string;
+    description?: string;
     category: string;
     image: string;
     quantity: number;

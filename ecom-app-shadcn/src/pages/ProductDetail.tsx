@@ -4,15 +4,29 @@ import { Link, useParams } from "react-router-dom";
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "../store/cartStore";
+import { Product } from "@/types/ProductTypes";
 
 
 const ProductDetail = () => {
+  const addToCart = useCartStore((state) => state.addToCart);
+
   const { id } = useParams<{ id: string }>();
 
   const { data: product } = useQuery({
     queryKey: ["product", id],
     queryFn: () => fetchProductById(id!),
   });
+
+  const handleAdd = (product: Product) => {
+            try {
+              addToCart(product); 
+            alert(`Product added to cart successfully!`); 
+            } catch (error) {
+            alert("Failed to remove product. Please try again.");
+            }
+        
+    };
   
   return (
     <div >
@@ -44,7 +58,12 @@ const ProductDetail = () => {
               </CardContent>
 
               <CardFooter className="p-0 mt-4">
-                <Button className="w-full">Add to Cart</Button>
+                <Button 
+                className="w-full"
+                onClick={() => product && handleAdd(product)}
+                >
+                  Add to Cart
+                </Button>
               </CardFooter>
             </div>
           </div>

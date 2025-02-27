@@ -15,7 +15,7 @@ function App() {
     <>
       <SidebarProvider>
         <AppSidebar /> 
-        <div className="p-4 mt-16">
+        <div className="p-4 mt-16 mx-auto">
           <NavMenu />    
           <Routes>
             <Route path="/" element={<Home />} />

@@ -6,9 +6,11 @@ import { useState } from "react"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button"
+import { useCartStore } from "../store/cartStore";
 
 
 const Products:React.FC = () => {
+    const addToCart = useCartStore((state) => state.addToCart);
 
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     
@@ -26,14 +28,18 @@ const Products:React.FC = () => {
         queryFn : ()=> orderProducts(selectedCategory,selectedOrder)
     });
 
-
-    // const { data: products, isLoading, error } = useQuery({
-    //     queryKey : ["products",selectedCategory],
-    //     queryFn : ()=> fetchProductsByCategory(selectedCategory)
-    // })
-
     if(isLoading) return <div><h1>Loading...</h1></div>
     if(error instanceof Error) return <div><h1>Error: {error.message}</h1></div>
+
+    const handleAdd = (product: Product) => {
+        try {
+          addToCart(product); 
+        alert(`Product added to cart successfully!`); 
+        } catch (error) {
+        alert("Failed to remove product. Please try again.");
+        }
+    
+};
 
   return (
     <div className="px-4">
@@ -101,7 +107,12 @@ const Products:React.FC = () => {
                 </p>
                 </CardContent>
                 <CardFooter>
-                <Button className="w-full">Add to Cart</Button>
+                <Button 
+                className="w-full"
+                onClick={() => handleAdd(product)}
+                >
+                    Add to Cart
+                </Button>
                 </CardFooter>  
             </Card>
         ))}

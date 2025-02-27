@@ -1,4 +1,4 @@
-import { Home,Package, Pencil } from "lucide-react"
+import { Home,Package, Pencil, ShoppingCart } from "lucide-react"
 
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router-dom"
 
 // Menu items.
 const items = [
@@ -24,6 +25,11 @@ const items = [
     icon: Package,
   },
   {
+    title: "Cart",
+    url: "/cart",
+    icon: ShoppingCart,
+  },
+  {
     title: "Update Products",
     url: "/update-products",
     icon: Pencil,
@@ -36,20 +42,20 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
