@@ -7,6 +7,7 @@ import ProductDetail from './pages/ProductDetail'
 import { NavMenu } from './components/NavMenu'
 import { SidebarProvider } from './components/ui/sidebar'
 import { AppSidebar } from './components/app-sidebar'
+import UpdateProducts from './pages/UpdateProducts'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/update-products" element={<UpdateProducts />} />
           </Routes>
         </div>
       </SidebarProvider>

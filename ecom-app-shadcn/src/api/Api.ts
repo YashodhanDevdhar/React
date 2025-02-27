@@ -45,3 +45,15 @@ export const fetchAllProducts = async():Promise<Product[]> => {
     }
     return [];
 }
+
+export const deleteProduct = async(id: number) => {
+    try {
+        const response = await axios.delete(`https://fakestoreapi.com/products/${id}`);
+        return response;
+    }
+    catch(error){
+        console.error("Error deleting product : ", error);
+        throw error;
+    }
+    
+};
