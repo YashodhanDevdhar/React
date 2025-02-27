@@ -38,7 +38,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({ isOpen, onOpenChang
         alert(`Product added successfully! \n Status: ${response.status}`);
     }
     catch(error){
-        alert("Failed to delete product. Please try again.");
+        alert("Failed to add product. Please try again.");
     }
     onOpenChange(false);
   };
