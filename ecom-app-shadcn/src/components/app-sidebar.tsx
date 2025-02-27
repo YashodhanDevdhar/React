@@ -25,7 +25,7 @@ const items = [
   },
   {
     title: "Update Products",
-    url: "/products",
+    url: "/update-products",
     icon: Pencil,
   }
 ]
