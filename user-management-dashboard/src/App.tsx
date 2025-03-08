@@ -14,21 +14,32 @@ function App() {
   return (
     <>
       {isAuthenticated && <Navbar />}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-          <Route path="/users" element={isAuthenticated ? <Users /> : <Navigate to="/login" />} />
+          <Route
+            path="/dashboard"
+            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/users"
+            element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
+          />
           <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/users/:id" element={<UserDetails />} />
         </Routes>
-
       </div>
     </>
-    
-  )
+  );
 }
 
-export default App
+export default App;

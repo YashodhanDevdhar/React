@@ -2,8 +2,8 @@ import { Box, Text, Image } from "@chakra-ui/react";
 import { User } from "../store/userStore";
 
 interface UserCardProps {
-    user: User;
-  }
+  user: User;
+}
 
 const UserCard = ({ user }: UserCardProps) => {
   return (
@@ -24,7 +24,10 @@ const UserCard = ({ user }: UserCardProps) => {
         mx="auto"
         mb={4}
       />
-      <Text fontSize="lg" fontWeight="bold">{`${user.first_name} ${user.last_name}`}</Text>
+      <Text
+        fontSize="lg"
+        fontWeight="bold"
+      >{`${user.first_name} ${user.last_name}`}</Text>
       <Text color="gray.500">{user.email}</Text>
     </Box>
   );

@@ -1,5 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Button, Spinner, Text, CloseButton, Dialog, Portal, Input} from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Spinner,
+  Text,
+  CloseButton,
+  Dialog,
+  Portal,
+  Input,
+} from "@chakra-ui/react";
 import UserCard from "../components/UserCard";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchUserById, updateUser } from "@/api/userApi";
@@ -7,23 +16,32 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 const UserDetails = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: selectedUser, isLoading, error } = useQuery({
+  const {
+    data: selectedUser,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["user", Number(id)],
     queryFn: () => fetchUserById(Number(id)),
-    enabled: !!id, // Only fetch if ID is available
+    enabled: !!id,
   });
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       firstName: selectedUser?.first_name || "",
       lastName: selectedUser?.last_name || "",
       email: selectedUser?.email || "",
-    }
+    },
   });
 
   const mutation = useMutation({
@@ -32,7 +50,7 @@ const UserDetails = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", Number(id)] });
       alert("User updated successfully!");
-      setIsDialogOpen(false); // Close the modal after success
+      setIsDialogOpen(false);
     },
     onError: () => {
       alert("Failed to update user.");
@@ -50,7 +68,11 @@ const UserDetails = () => {
     }
   };
 
-  const onSubmit = (data: { firstName: string; lastName: string; email: string }) => {
+  const onSubmit = (data: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }) => {
     const updatedUser = {
       name: `${data.firstName} ${data.lastName}`,
       email: data.email,
@@ -58,27 +80,30 @@ const UserDetails = () => {
     };
     mutation.mutate(updatedUser);
   };
-    
+
   return (
     <div>
       <Box textAlign="center" mt={6}>
-      {isLoading ? (
-        <Spinner size="xl" />
-      ) : error ? (
-        <Text color="red.500">Failed to fetch user details</Text>
-      ) : selectedUser ? (
-        <>
-          <UserCard user={selectedUser} /> 
-          <Button variant="outline" mt={4} onClick={handleEditClick}>
+        {isLoading ? (
+          <Spinner size="xl" />
+        ) : error ? (
+          <Text color="red.500">Failed to fetch user details</Text>
+        ) : selectedUser ? (
+          <>
+            <UserCard user={selectedUser} />
+            <Button variant="outline" mt={4} onClick={handleEditClick}>
               Edit
-            </Button>      
-        </>
-      ) : (
-        <Text>User not found</Text>
-      )}
-      <Dialog.Root open={isDialogOpen} onOpenChange={(e) => setIsDialogOpen(e.open)}>
-        <Portal>
-          <Dialog.Backdrop />
+            </Button>
+          </>
+        ) : (
+          <Text>User not found</Text>
+        )}
+        <Dialog.Root
+          open={isDialogOpen}
+          onOpenChange={(e) => setIsDialogOpen(e.open)}
+        >
+          <Portal>
+            <Dialog.Backdrop />
             <Dialog.Positioner>
               <Dialog.Content>
                 <Dialog.CloseTrigger asChild>
@@ -88,54 +113,74 @@ const UserDetails = () => {
                   <Dialog.Title>Edit user</Dialog.Title>
                 </Dialog.Header>
 
-                <Box as="form" onSubmit={handleSubmit(onSubmit)} w="300px" mx="auto">
-                <Box mb={3}>
-                  <Text>First Name</Text>
-                  <Input {...register("firstName", { required: "First Name is required" })} />
-                  {errors.firstName && <Text color="red.500">{String(errors.firstName.message)}</Text>}
-                </Box>
+                <Box
+                  as="form"
+                  onSubmit={handleSubmit(onSubmit)}
+                  w="300px"
+                  mx="auto"
+                >
+                  <Box mb={3}>
+                    <Text>First Name</Text>
+                    <Input
+                      {...register("firstName", {
+                        required: "First Name is required",
+                      })}
+                    />
+                    {errors.firstName && (
+                      <Text color="red.500">
+                        {String(errors.firstName.message)}
+                      </Text>
+                    )}
+                  </Box>
 
-                <Box mb={3}>
-                  <Text>Last Name</Text>
-                  <Input {...register("lastName", { required: "Last Name is required" })} />
-                  {errors.lastName && <Text color="red.500">{String(errors.lastName.message)}</Text>}
-                </Box>
+                  <Box mb={3}>
+                    <Text>Last Name</Text>
+                    <Input
+                      {...register("lastName", {
+                        required: "Last Name is required",
+                      })}
+                    />
+                    {errors.lastName && (
+                      <Text color="red.500">
+                        {String(errors.lastName.message)}
+                      </Text>
+                    )}
+                  </Box>
 
-                <Box mb={3}>
-                  <Text>Email</Text>
-                  <Input {...register("email", { required: "Email is required" })} />
-                  {errors.email && <Text color="red.500">{String(errors.email.message)}</Text>}
-                </Box>
+                  <Box mb={3}>
+                    <Text>Email</Text>
+                    <Input
+                      {...register("email", { required: "Email is required" })}
+                    />
+                    {errors.email && (
+                      <Text color="red.500">
+                        {String(errors.email.message)}
+                      </Text>
+                    )}
+                  </Box>
 
-                {/* Submit & Cancel Buttons */}
-                <Dialog.Footer>
-                  {/* <Dialog.ActionTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </Dialog.ActionTrigger>
-                  <Button type="submit" loading={mutation.isPending} colorScheme="blue">
-                    Save
-                  </Button> */}
-                  <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                        Cancel
-                      </Button>
-                      <Button type="submit" loading={mutation.isPending}>
-                        Save
-                      </Button>
-                </Dialog.Footer>
-              </Box>
-                
+                  <Dialog.Footer>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsDialogOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" loading={mutation.isPending}>
+                      Save
+                    </Button>
+                  </Dialog.Footer>
+                </Box>
               </Dialog.Content>
             </Dialog.Positioner>
-        </Portal>
-      </Dialog.Root>
-      <Button mt={4} onClick={() => navigate("/users")} colorScheme="blue">
-        Back to Users
-      </Button>
-    </Box>
-      
-
+          </Portal>
+        </Dialog.Root>
+        <Button mt={4} onClick={() => navigate("/users")} colorScheme="blue">
+          Back to Users
+        </Button>
+      </Box>
     </div>
-  )
-}
+  );
+};
 
-export default UserDetails
+export default UserDetails;

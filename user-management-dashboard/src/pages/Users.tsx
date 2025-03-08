@@ -1,6 +1,5 @@
-import UserTable from "@/components/UserTable"
-import { Box, Heading  } from "@chakra-ui/react"
-
+import UserTable from "@/components/UserTable";
+import { Box, Heading } from "@chakra-ui/react";
 
 const Users = () => {
   return (
@@ -8,7 +7,7 @@ const Users = () => {
       <Heading mb={4}>Users</Heading>
       <UserTable />
     </Box>
-  )
-}
+  );
+};
 
-export default Users
+export default Users;

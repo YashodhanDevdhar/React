@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import { fetchUserById} from "../api/userApi";
+import { fetchUserById } from "../api/userApi";
 
 export type User = {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    avatar: string;
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar: string;
 };
 
 type UserStore = {
@@ -23,19 +23,17 @@ export const useUserStore = create<UserStore>((set) => ({
   error: null,
   currentUserId: null,
 
-
-  fetchUserDetails: async (id : number) => {
+  fetchUserDetails: async (id: number) => {
     set((state) => {
-      if (state.currentUserId === id) return state; // Prevent redundant fetch
+      if (state.currentUserId === id) return state;
       return { isLoading: true, currentUserId: id, error: null };
-  });
+    });
     try {
       const user = await fetchUserById(id);
       set({ selectedUser: user, isLoading: false });
     } catch (error) {
       console.error("Failed to fetch user details:", error);
-      set({error: "Failed to fetch user details", isLoading: false });
+      set({ error: "Failed to fetch user details", isLoading: false });
     }
   },
-
-  }));
+}));

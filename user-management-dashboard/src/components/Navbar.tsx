@@ -13,12 +13,25 @@ const Navbar = () => {
       justify="space-between"
       align="center"
     >
-      
       <Box>
-        <NavLink to="/dashboard" style={{ marginRight: "16px", textDecoration: "none", color: "white" }}>
+        <NavLink
+          to="/dashboard"
+          style={{
+            marginRight: "16px",
+            textDecoration: "none",
+            color: "white",
+          }}
+        >
           Dashboard
         </NavLink>
-        <NavLink to="/users" style={{ marginRight: "16px", textDecoration: "none", color: "white" }}>
+        <NavLink
+          to="/users"
+          style={{
+            marginRight: "16px",
+            textDecoration: "none",
+            color: "white",
+          }}
+        >
           Users
         </NavLink>
       </Box>
@@ -27,7 +40,7 @@ const Navbar = () => {
         Logout
       </Button>
     </Flex>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
