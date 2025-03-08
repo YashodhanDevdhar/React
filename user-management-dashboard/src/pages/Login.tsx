@@ -9,10 +9,16 @@ interface LoginForm {
   password: string;
 }
 
+
+
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
 
   const onSubmit = async (data: LoginForm) => {
     try {
@@ -52,6 +58,15 @@ const Login = () => {
         </Field.Root>
 
         <Button type="submit" colorScheme="blue" w="full">Login</Button>
+
+        <Button 
+          colorScheme="gray" 
+          w="full" 
+          mt="2" 
+          onClick={handleRegister}
+        >
+          Register
+        </Button>
       </form>
     </Box>
   )

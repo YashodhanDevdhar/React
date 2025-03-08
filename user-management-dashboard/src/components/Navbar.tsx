@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <Flex
       as="nav"
-      bg="blue.500"
+      bg="black"
       color="white"
       p="4"
       justify="space-between"
